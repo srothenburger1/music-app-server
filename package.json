@@ -5,12 +5,13 @@
   "main": "dist/app.js",
   "author": "Steven Rothenburger",
   "license": "MIT",
-
   "dependencies": {
     "@types/mime": "^2.0.1",
     "@types/node": "^13.5.1",
+    "@types/uuid": "^3.4.7",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "express": "^4.17.1",
     "filereader": "^0.10.3",
     "fs": "^0.0.1-security",
     "json": "^9.0.6",
@@ -19,11 +20,13 @@
     "multipart": "^0.1.5",
     "typescript": "^3.8.3",
     "xhr2": "^0.2.0",
-    "xmlhttprequest": "^1.8.0",
-    "@types/uuid": "^3.4.7",
-    "express": "^4.17.1"
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "start": "tsc && node ./dist/app.js"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5",
+    "prettierrc": "^0.0.0-5"
   }
 }
