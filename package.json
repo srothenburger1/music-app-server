@@ -1,4 +1,11 @@
 {
+  "name": "music-app-server",
+  "version": "1.0.0",
+  "description": "A server for the music stats app",
+  "main": "dist/app.js",
+  "author": "Steven Rothenburger",
+  "license": "MIT",
+
   "dependencies": {
     "@types/mime": "^2.0.1",
     "@types/node": "^13.5.1",
@@ -13,10 +20,12 @@
     "nodemon": "^2.0.3",
     "typescript": "^3.8.3",
     "xhr2": "^0.2.0",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "@types/uuid": "^3.4.7",
+    "express": "^4.17.1"
   },
   "scripts": {
-    "test": "tsc ./Services/*.ts && tsc ./Server/*.ts && nodemon ./Server/app.js ",
-    "start": "tsc ./Services/*.ts && tsc ./Server/*.ts && node ./Server/app.js"
+    "test": "tsc ./Services/*.ts && tsc ./*.ts && nodemon ./app.js ",
+    "start": "tsc ./Services/*.ts && tsc && node ./app.js"
   }
 }

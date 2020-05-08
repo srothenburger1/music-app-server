@@ -1,5 +1,5 @@
-import MusicStatsService from "../Services/MusicStatsService.js"
-import { MyActivity } from "../Interfaces/Models/IMyActivity.js";
+import MusicStatsService from "./Services/MusicStatsService.js"
+import { MyActivity } from "./Interfaces/Models/IMyActivity.js";
 
 //#region Setup
 const express = require('express');

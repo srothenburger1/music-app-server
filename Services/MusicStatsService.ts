@@ -70,7 +70,9 @@ class MusicStatsService {
 		const yearVar: string = year.toString();
 		jsonFile.forEach(element => {
 			if (element.hasOwnProperty('title')) {
+				//@ts-ignore
 				if (JSON.stringify(element).includes(yearVar) 
+				//@ts-ignore
 				&& JSON.stringify(element).includes('Listened to')) {
 					this.sortedData.push(
 						{ title: JSON.stringify(element.title).slice(13, -1)
@@ -82,10 +84,11 @@ class MusicStatsService {
 
 	sortInfo(): void {
 		this.sortedData.forEach(item => {
+			//@ts-ignore
 			if (!this.uniqueArtists.includes(item.artist)) {
 				this.uniqueArtists.push(item.artist);
 			}
-
+			//@ts-ignore
 			if(!this.uniqueTitles.find(({title}) => title === item.title)){
 				this.uniqueTitles.push({ title: item.title, artist: item.artist });
 			}
