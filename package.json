@@ -26,6 +26,6 @@
   },
   "scripts": {
     "test": "tsc ./Services/*.ts && tsc ./*.ts && nodemon ./app.js ",
-    "start": "tsc ./Services/*.ts && tsc && node ./app.js"
+    "start": "tsc ./Services/*.ts && tsc && node ./dist/app.js"
   }
 }
