@@ -1,4 +1,5 @@
 import MusicStatsService from './Services/MusicStatsService.js';
+import { sortYTData } from './Services/YTMusicService.js';
 import { MyActivity } from './Interfaces/Models/IMyActivity.js';
 
 //#region Setup
@@ -58,7 +59,12 @@ app.post(
 			year: req.body.year,
 		};
 
-		userData = MusicStatsService.createObj(payLoad);
+		if (JSON.stringify(payLoad.file).includes('YouTube Music')) {
+			userData = sortYTData(payLoad);
+		} else {
+			userData = MusicStatsService.createObj(payLoad);
+		}
+
 		userData === null
 			? res.status(400).send(null)
 			: res.status(200).send(userData);
