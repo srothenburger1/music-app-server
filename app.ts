@@ -28,7 +28,7 @@ app.use(
 	})
 );
 
-app.use(function (req, res, next) {
+app.use(function (_req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header(
 		'Access-Control-Allow-Headers',
@@ -49,12 +49,14 @@ app.post(
 	'/upload',
 	upload.single('path'),
 	(
-		req: { body: { id: string; year: string }; file: { buffer: Buffer } },
-		res: { status: Function; send: Function },
-		next: any
+		req: {
+			body: { year: string };
+			file: { buffer: Buffer };
+			headers: { ['user-agent']: string };
+		},
+		res: { status: Function; send: Function }
 	) => {
-		let payLoad: { id: string; file: string; year: string } = {
-			id: req.body.id,
+		let payLoad: { file: string; year: string } = {
 			file: req.file.buffer.toString(),
 			year: req.body.year,
 		};
@@ -68,5 +70,6 @@ app.post(
 		userData === null
 			? res.status(400).send(null)
 			: res.status(200).send(userData);
+		console.log(new Date(), req.headers['user-agent']);
 	}
 );

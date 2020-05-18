@@ -1,7 +1,7 @@
 import { MyActivity } from '../Interfaces/Models/IMyActivity';
 
 export function sortYTData(payload) {
-	const { id, file, year } = payload;
+	const { file, year } = payload;
 
 	let parsedFile;
 
