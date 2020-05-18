@@ -56,9 +56,13 @@ app.post(
 		},
 		res: { status: Function; send: Function }
 	) => {
+		const today = new Date();
+		const year =
+			today.getMonth() < 11 ? today.getFullYear() - 1 : today.getFullYear();
+
 		let payLoad: { file: string; year: string } = {
 			file: req.file.buffer.toString(),
-			year: req.body.year,
+			year: year.toString(),
 		};
 
 		if (JSON.stringify(payLoad.file).includes('YouTube Music')) {
