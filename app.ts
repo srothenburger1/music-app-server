@@ -1,4 +1,6 @@
-import MusicStatsService from './Services/MusicStatsService.js';
+//@ts-nocheck
+
+import { sortMusicData } from './Services/MusicStatsService.js';
 import { sortYTData } from './Services/YTMusicService.js';
 import { MyActivity } from './Interfaces/Models/IMyActivity.js';
 
@@ -41,7 +43,7 @@ app.use(function (_req, res, next) {
 
 app.listen(port, () => console.log(`Server running on port ${port}!`));
 
-app.get('/', (_req, res) => {
+app.get('/', (_req: any, res) => {
 	res.status(200).send('Please post a JSON file to /upload');
 });
 
@@ -60,15 +62,15 @@ app.post(
 		const year =
 			today.getMonth() < 11 ? today.getFullYear() - 1 : today.getFullYear();
 
-		let payLoad: { file: string; year: string } = {
+		let payLoad: { file: string; year: number } = {
 			file: req.file.buffer.toString(),
-			year: year.toString(),
+			year: year,
 		};
 
 		if (JSON.stringify(payLoad.file).includes('YouTube Music')) {
 			userData = sortYTData(payLoad);
 		} else {
-			userData = MusicStatsService.createObj(payLoad);
+			userData = sortMusicData(payLoad);
 		}
 
 		userData === null
