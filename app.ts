@@ -2,7 +2,7 @@
 
 import { sortMusicData } from './Services/MusicStatsService.js';
 import { sortYTData } from './Services/YTMusicService.js';
-import { MyActivity } from './Interfaces/Models/IMyActivity.js';
+import { UserActivities } from './Interfaces/Models/IUserActivity';
 
 //#region Setup
 const express = require('express');
@@ -16,7 +16,7 @@ const upload = multer({ storage: storage });
 const app = express();
 const port = process.env.PORT || 5000;
 
-let userData: MyActivity;
+let userData: UserActivities;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
