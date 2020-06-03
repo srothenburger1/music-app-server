@@ -12,16 +12,19 @@ export const sortMusicData = ({ file, year }) => {
 		console.log('Error Creating Object');
 	}
 
-	return countUniqueItems(parsedFile);
+	return countUniqueItems(parsedFile, year);
 };
 
 // this function should be easy to stitched in after the JSON has been read and parsed.
-const countUniqueItems = (sortedActivity) => {
+const countUniqueItems = (sortedActivity, year) => {
 	const uniqueTitles = [];
 	const uniqueArtists = [];
 
 	sortedActivity.forEach((activity) => {
-		if (activity.title.includes('Listened to')) {
+		if (
+			activity.title.includes('Listened to') &&
+			activity.time.includes(year.toString())
+		) {
 			if (
 				!uniqueTitles.find((item) => item.title === activity.title.slice(12))
 			) {
@@ -65,9 +68,18 @@ const countUniqueItems = (sortedActivity) => {
 			? 1
 			: 0
 	);
+
+	// This is so that the count doesnt get changed when we prune the lists
+	const finalArtistCount = uniqueArtists.length;
+	const finalTitleCount = uniqueTitles.length;
+
+	// Prune data down to top 50
+	uniqueArtists.length = uniqueArtists.length > 50 ? 50 : uniqueArtists.length;
+	uniqueTitles.length = uniqueTitles.length > 50 ? 50 : uniqueTitles.length;
+
 	return {
-		songCount: uniqueTitles.length,
-		artistCount: uniqueArtists.length,
+		songCount: finalTitleCount,
+		artistCount: finalArtistCount,
 		songs: uniqueTitles,
 		artists: uniqueArtists,
 	};

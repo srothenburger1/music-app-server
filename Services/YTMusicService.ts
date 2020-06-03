@@ -17,10 +17,10 @@ export const sortYTData = ({ file, year }: Props): UserActivities => {
 		console.log('Error Creating Object');
 	}
 
-	return countUniqueItems(parsedFile);
+	return countUniqueItems(parsedFile, year);
 };
 
-const countUniqueItems = (sortedActivity): UserActivities => {
+const countUniqueItems = (sortedActivity, year): UserActivities => {
 	const uniqueTitles = [];
 	const uniqueArtists = [];
 
@@ -28,7 +28,8 @@ const countUniqueItems = (sortedActivity): UserActivities => {
 		if (
 			activity.header.includes('YouTube Music') &&
 			activity.title.includes('Watched ') &&
-			activity.subtitles
+			activity.subtitles &&
+			activity.time.includes(year.toString())
 		) {
 			if (
 				!uniqueTitles.find((item) => item.title === activity.title.slice(8))
