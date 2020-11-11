@@ -1,12 +1,10 @@
-import { UserActivities } from '../Interfaces/Models/IUserActivity';
-
 type Props = {
 	file: string;
 	year: number;
 };
 
-export const sortYTData = ({ file, year }: Props): UserActivities => {
-	let parsedFile: UserActivities | null;
+export const sortYTData = ({ file, year }: Props) => {
+	let parsedFile: any;
 
 	// convert file to json object
 	try {
@@ -33,7 +31,7 @@ const getArtistName = (value) => {
 	return returnName;
 };
 
-const countUniqueItems = (parsedFile, year): UserActivities => {
+const countUniqueItems = (parsedFile, year) => {
 	const sortedActivity = parsedFile.reduce(
 		(acc, val) => {
 			if (
@@ -85,7 +83,6 @@ const countUniqueItems = (parsedFile, year): UserActivities => {
 			uniqueArtists: [],
 		}
 	);
-	console.log(sortedActivity);
 
 	const { uniqueArtists, uniqueTitles } = sortedActivity;
 

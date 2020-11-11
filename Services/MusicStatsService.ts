@@ -1,7 +1,5 @@
-import { UserActivities } from '../Interfaces/Models/IUserActivity';
-
 export const sortMusicData = ({ file, year }) => {
-	let parsedFile: UserActivities | null;
+	let parsedFile;
 
 	// convert file to json object
 	try {
