@@ -17,68 +17,93 @@ export const sortYTData = ({ file, year }: Props): UserActivities => {
 
 	return countUniqueItems(parsedFile, year);
 };
+const getArtistName = (value) => {
+	let returnName = value.subtitles[0].name;
 
-const countUniqueItems = (sortedActivity, year): UserActivities => {
-	const uniqueTitles: any = [];
-	const uniqueArtists: any = [];
+	if (returnName.includes('Topic')) {
+		returnName = returnName.slice(0, -8);
+	}
+	if (returnName.includes('VEVO') || returnName.includes('Vevo')) {
+		returnName = returnName.slice(0, -4);
+		if (returnName.includes('Official')) {
+			returnName = returnName.slice(0, -8);
+		}
+	}
 
-	sortedActivity.forEach((activity) => {
-		if (
-			activity.header.includes('YouTube Music') &&
-			activity.title.includes('Watched ') &&
-			activity.subtitles &&
-			activity.time.includes(year.toString())
-		) {
+	return returnName;
+};
+
+const countUniqueItems = (parsedFile, year): UserActivities => {
+	const sortedActivity = parsedFile.reduce(
+		(acc, val) => {
 			if (
-				!uniqueTitles.find((item) => item.title === activity.title.slice(8))
+				!val.header.includes('YouTube Music') ||
+				!val.title.includes('Watched ') ||
+				!val.subtitles ||
+				!val.time.includes(year.toString())
 			) {
-				uniqueTitles.push({
-					title: activity.title.slice(8),
-					artist: activity.subtitles[0].name.slice(0, -8),
+				return acc;
+			}
+
+			// slice the Watched - off the title
+			const title = val.title.slice(8);
+			const artist = getArtistName(val);
+
+			// titles
+			if (!acc.uniqueTitles.find((item) => item.title === title)) {
+				acc.uniqueTitles.push({
+					title,
+					artist,
 					numberOfListens: 1,
 				});
 			} else {
-				const selectedTitle = uniqueTitles.find(
-					(item) => item.title === activity.title.slice(8)
+				const selectedTitle = acc.uniqueTitles.find(
+					(item) => item.title === title
 				);
 				selectedTitle.numberOfListens += 1;
 			}
 
-			// some activities dont contain a subtitle property. These are often just urls.
+			// artists
 			if (
-				activity.subtitles &&
-				!uniqueArtists.find(
-					(item) => item.artist === activity.subtitles[0].name.slice(0, -8)
-				)
+				val.subtitles &&
+				!acc.uniqueArtists.find((item) => item.artist === artist)
 			) {
-				uniqueArtists.push({
-					artist: activity.subtitles[0].name.slice(0, -8),
+				acc.uniqueArtists.push({
+					artist,
 					numberOfListens: 1,
 				});
 			} else {
-				const selectedArtist = uniqueArtists.find(
-					(item) => item.artist === activity.subtitles[0].name.slice(0, -8)
+				const selectedArtist = acc.uniqueArtists.find(
+					(item) => item.artist === artist
 				);
 				selectedArtist.numberOfListens += 1;
 			}
+			return acc;
+		},
+		{
+			uniqueTitles: [],
+			uniqueArtists: [],
 		}
-		// sort
-		uniqueArtists.sort((a, b) =>
-			a.numberOfListens > b.numberOfListens
-				? -1
-				: b.numberOfListens > a.numberOfListens
-				? 1
-				: 0
-		);
-		uniqueTitles.sort((a, b) =>
-			a.numberOfListens > b.numberOfListens
-				? -1
-				: b.numberOfListens > a.numberOfListens
-				? 1
-				: 0
-		);
-	});
+	);
+	console.log(sortedActivity);
 
+	const { uniqueArtists, uniqueTitles } = sortedActivity;
+
+	// sort
+	uniqueArtists.sort((a, b) =>
+		a.numberOfListens > b.numberOfListens
+			? -1
+			: b.numberOfListens > a.numberOfListens
+			? 1
+			: 0
+	);
+	uniqueTitles.sort((a, b) =>
+		a.numberOfListens > b.numberOfListens
+			? -1
+			: b.numberOfListens > a.numberOfListens
+			? 1
+			: 0
+	);
 	// This is so that the count doesnt get changed when we prune the lists
 	const finalArtistCount = uniqueArtists.length;
 	const finalTitleCount = uniqueTitles.length;

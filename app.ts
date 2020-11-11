@@ -60,7 +60,7 @@ app.post(
 	) => {
 		const today = new Date();
 		const year =
-			today.getMonth() < 11 ? today.getFullYear() - 1 : today.getFullYear();
+			today.getMonth() < 10 ? today.getFullYear() - 1 : today.getFullYear();
 
 		let payLoad: { file: string; year: number } = {
 			file: req.file.buffer.toString(),
